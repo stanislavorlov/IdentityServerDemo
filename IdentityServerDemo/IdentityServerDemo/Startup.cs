@@ -26,6 +26,8 @@ namespace IdentityServerDemo
                 .AddInMemoryApiScopes(Config.ApiScopes)
                 .AddTestUsers(Config.Users)
                 .AddDeveloperSigningCredential();
+
+            services.AddControllersWithViews();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -38,14 +40,11 @@ namespace IdentityServerDemo
 
             app.UseRouting();
             app.UseIdentityServer();
+            app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
-            });
+            app.UseStaticFiles();
+
+            app.UseEndpoints(endpoints => endpoints.MapDefaultControllerRoute());
         }
     }
 }
