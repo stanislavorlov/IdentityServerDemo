@@ -1,6 +1,7 @@
 ﻿using ClientMVC.Models;
 using ClientMVC.Services;
 using IdentityModel.Client;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -35,6 +36,7 @@ namespace ClientMVC.Controllers
             return View();
         }
 
+        [Authorize]
         public async Task<IActionResult> Weather()
         {
             using (var client = new HttpClient())

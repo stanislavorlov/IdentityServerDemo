@@ -102,7 +102,7 @@ namespace IdentityServerDemo
 
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
                     ClientSecrets = {new Secret("SuperSecretPassword".Sha256())},
-
+                    
                     AllowedScopes = {"weatherapi.read", "weatherapi.write"}
                 },
 
@@ -114,10 +114,10 @@ namespace IdentityServerDemo
 
                     AllowedGrantTypes = GrantTypes.Code,
 
-                    RedirectUris = {"https://localhost:5444/signin-oidc"},
-                    FrontChannelLogoutUri = "https://localhost:5444/signout-oidc",
-                    PostLogoutRedirectUris = {"https://localhost:5444/signout-callback-oidc"},
-
+                    RedirectUris = {"http://localhost:64943/signin-oidc"},
+                    FrontChannelLogoutUri = "http://localhost:64943/signout-oidc",
+                    PostLogoutRedirectUris = {"http://localhost:64943/signout-callback-oidc"},
+                    
                     AllowOfflineAccess = true,
                     AllowedScopes = {"openid", "profile", "weatherapi.read"},
                     RequirePkce = true,

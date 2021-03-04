@@ -25,6 +25,31 @@ namespace ClientMVC
         {
             services.AddControllersWithViews();
 
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = "cookie";
+                options.DefaultChallengeScheme = "oidc";
+            })
+                .AddCookie("cookie", options =>
+                {
+                    options.Cookie.SameSite = Microsoft.AspNetCore.Http.SameSiteMode.None;
+                    options.Cookie.IsEssential = true;
+                })
+                .AddOpenIdConnect("oidc", options =>
+                {
+                    options.Authority = Configuration["InteractiveServiceSettings:AuthorityUrl"];
+                    options.RequireHttpsMetadata = false;
+                    options.ClientId = Configuration["InteractiveServiceSettings:ClientId"];
+                    options.ClientSecret = Configuration["InteractiveServiceSettings:ClientSecret"];
+
+                    options.ResponseType = "code";
+                    options.UsePkce = true;
+                    options.ResponseMode = "query";
+
+                    options.Scope.Add(Configuration["InteractiveServiceSettings:Scopes:0"]);
+                    options.SaveTokens = true;
+                });
+
             services.AddSingleton<ITokenService, TokenService>();
             services.Configure<IdentityServerSettings>(Configuration.GetSection("IdentityServerSettings"));
         }
@@ -44,6 +69,7 @@ namespace ClientMVC
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
